@@ -4,8 +4,6 @@ from .models import Listing
 class CreateListingForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CreateListingForm, self).__init__(*args, **kwargs)
-        # Sets image field required to false
-        self.fields['image'].required = False
         # Iterates over fields, removes field label and adds bootstrap html attributes 
         for field_name, field in self.fields.items():
             field.label = ''
