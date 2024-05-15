@@ -16,6 +16,65 @@ def index(request):
     })
 
 
+@login_required(login_url='/login')
+def create_listing(request):
+    if request.method == "POST":
+        form = CreateListingForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            owner = User.objects.filter()
+            listing = Listing(
+                title=form_data['title'],
+                description=form_data['description'],
+                image=form_data['image'],
+                price=form_data['price'],
+                owner=request.user,
+                category=form_data['category']
+                )
+            listing.save()
+
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        return render(request, "auctions/create_listing.html", {
+            "form": CreateListingForm,
+        })
+
+
+@login_required(login_url='/login')
+def view_listing(request, listing_id):
+    listing = Listing.objects.filter(pk=listing_id).first()
+    watchlist = Listing.objects.filter(watchlist=request.user).filter(pk=listing_id)
+    print(watchlist)
+    return render(request, "auctions/view_listing.html", {
+        "listing": listing,
+        "watchlist": watchlist
+    })
+
+
+@login_required(login_url='/login')
+def watchlist(request):
+    print(watchlist)
+    return render(request, "auctions/watchlist.html", {
+        "listings": Listing.objects.filter(watchlist=request.user)
+    })
+
+@login_required(login_url='/login')
+def add_remove_watchlist(request, listing_id):
+    if request.method == "POST":
+        action = request.POST['action']
+        listing = Listing.objects.get(pk=listing_id)
+        print(listing)
+        user = request.user
+        if action == 'Add':
+            listing.watchlist.add(user)
+            return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
+        elif action == 'Remove':
+            listing.watchlist.remove(user)
+            return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
+        else:
+            return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
+
+
 def login_view(request):
     if request.method == "POST":
 
@@ -66,37 +125,3 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
-
-
-@login_required(login_url='/login')
-def create_listing(request):
-    if request.method == "POST":
-        form = CreateListingForm(request.POST)
-        if form.is_valid():
-            form_data = form.cleaned_data
-            owner = User.objects.filter()
-            listing = Listing(
-                title=form_data['title'],
-                description=form_data['description'],
-                image=form_data['image'],
-                price=form_data['price'],
-                owner=request.user,
-                category=form_data['category']
-                )
-            listing.save()
-
-        return HttpResponseRedirect(reverse("index"))
-    else:
-        return render(request, "auctions/create_listing.html", {
-            "form": CreateListingForm,
-        })
-
-@login_required(login_url='/login')
-def view_listing(request, listing_id):
-    if request.method == "POST":
-        return HttpResponseRedirect(reverse('index'))
-    else:
-        listing = Listing.objects.filter(id=listing_id).first()
-        return render(request, "auctions/view_listing.html", {
-            "listing": listing,
-        })

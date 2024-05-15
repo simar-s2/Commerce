@@ -17,6 +17,7 @@ class Listing(models.Model):
     is_active = models.BooleanField(default=True)
     category = models.CharField(max_length=100, blank=True)
     date = models.DateTimeField(verbose_name="date created", auto_now_add=True)
+    watchlist = models.ManyToManyField(User, blank=True, null=True, related_name="watchlist")
 
     def __str__(self):
         return(f"{self.title}")
