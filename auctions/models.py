@@ -22,6 +22,13 @@ class Listing(models.Model):
     def __str__(self):
         return(f"{self.title}")
 
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="commentor")
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, null=True, related_name="listing")
+    comment = models.CharField(max_length=300)
+    date = models.DateTimeField(verbose_name="date created", auto_now_add=True)
+
+
 # class Bid(models.Model):
 #     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
 #     bidder = models.ForeignKey(User, on_delete=models.CASCADE)

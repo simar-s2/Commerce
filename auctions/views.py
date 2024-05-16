@@ -5,8 +5,8 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing
-from .forms import CreateListingForm
+from .models import User, Listing, Comment
+from .forms import CreateListingForm, CommentForm
 
 
 def index(request):
@@ -44,26 +44,27 @@ def create_listing(request):
 def view_listing(request, listing_id):
     listing = Listing.objects.filter(pk=listing_id).first()
     watchlist = Listing.objects.filter(watchlist=request.user).filter(pk=listing_id)
-    print(watchlist)
+    comments = Comment.objects.filter(listing=listing_id).all()
     return render(request, "auctions/view_listing.html", {
         "listing": listing,
-        "watchlist": watchlist
+        "watchlist": watchlist,
+        "comments": comments,
+        "form": CommentForm
     })
 
 
 @login_required(login_url='/login')
 def watchlist(request):
-    print(watchlist)
     return render(request, "auctions/watchlist.html", {
         "listings": Listing.objects.filter(watchlist=request.user)
     })
+
 
 @login_required(login_url='/login')
 def add_remove_watchlist(request, listing_id):
     if request.method == "POST":
         action = request.POST['action']
         listing = Listing.objects.get(pk=listing_id)
-        print(listing)
         user = request.user
         if action == 'Add':
             listing.watchlist.add(user)
@@ -73,6 +74,19 @@ def add_remove_watchlist(request, listing_id):
             return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
         else:
             return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
+
+
+@login_required(login_url='/login')
+def add_comment(request, listing_id):
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        listing = Listing.objects.get(pk=listing_id)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            comment = Comment(user=request.user, listing=listing, comment=form_data['comment'])
+            comment.save()
+
+    return HttpResponseRedirect(reverse("view_listing", args=(listing_id, )))
 
 
 def login_view(request):
