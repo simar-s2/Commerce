@@ -11,8 +11,20 @@ from .forms import CreateListingForm, CommentForm, BidForm
 
 def index(request):
     listings = Listing.objects.all()
+    listings_with_prices = []
+
+    for listing in listings:
+        bids = Bid.objects.filter(listing=listing)
+        highest_bid = bids.last() if bids.exists() else None
+        price_to_display = highest_bid.bid if highest_bid.bid else listing.price
+        
+        listings_with_prices.append({
+            "listing": listing,
+            "price": price_to_display
+        })
+
     return render(request, "auctions/index.html", {
-        "listings": listings,
+        "listings": listings_with_prices,
     })
 
 
@@ -104,9 +116,8 @@ def bid(request, listing_id):
         bids = Bid.objects.filter(listing=listing).all()
         if form.is_valid():
             form_data = form.cleaned_data
-            # If first bid does not exist, check the listing price and make sure the bid is greater or equal
             if not bids:
-                if float(form_data['bid']) < float(listing.price):
+                if form_data['bid'] < listing.price:
                     return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
                 else:
                     bid = Bid(user=user, listing=listing, bid=form_data['bid'])
