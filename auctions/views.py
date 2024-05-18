@@ -5,8 +5,8 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing, Comment
-from .forms import CreateListingForm, CommentForm
+from .models import User, Listing, Comment, Bid
+from .forms import CreateListingForm, CommentForm, BidForm
 
 
 def index(request):
@@ -45,11 +45,17 @@ def view_listing(request, listing_id):
     listing = Listing.objects.filter(pk=listing_id).first()
     watchlist = Listing.objects.filter(watchlist=request.user).filter(pk=listing_id)
     comments = Comment.objects.filter(listing=listing_id).all()
+    bids = Bid.objects.filter(listing=listing)
+    last_bid = bids.last() if bids.exists() else None
     return render(request, "auctions/view_listing.html", {
         "listing": listing,
         "watchlist": watchlist,
         "comments": comments,
-        "form": CommentForm
+        "Commentform": CommentForm,
+        "Bidform": BidForm,
+        "bids": bids,
+        "last_bid": last_bid,
+        "user": request.user,
     })
 
 
@@ -66,10 +72,10 @@ def add_remove_watchlist(request, listing_id):
         action = request.POST['action']
         listing = Listing.objects.get(pk=listing_id)
         user = request.user
-        if action == 'Add':
+        if action == 'Add to watchlist':
             listing.watchlist.add(user)
             return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
-        elif action == 'Remove':
+        elif action == 'Remove from watchlist':
             listing.watchlist.remove(user)
             return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
         else:
@@ -87,6 +93,32 @@ def add_comment(request, listing_id):
             comment.save()
 
     return HttpResponseRedirect(reverse("view_listing", args=(listing_id, )))
+
+
+@login_required(login_url='/login')
+def bid(request, listing_id):
+    if request.method == "POST":
+        form = BidForm(request.POST)
+        user = request.user
+        listing = Listing.objects.get(pk=listing_id)
+        bids = Bid.objects.filter(listing=listing).all()
+        if form.is_valid():
+            form_data = form.cleaned_data
+            # If first bid does not exist, check the listing price and make sure the bid is greater or equal
+            if not bids:
+                if float(form_data['bid']) < float(listing.price):
+                    return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
+                else:
+                    bid = Bid(user=user, listing=listing, bid=form_data['bid'])
+                    bid.save()
+            else:
+                last_bid = bids[len(bids) - 1]
+                if form_data['bid'] <= last_bid.bid:
+                    return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
+                else:
+                    bid = Bid(user=user, listing=listing, bid=form_data['bid'])
+                    bid.save()
+    return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
 
 
 def login_view(request):
