@@ -16,7 +16,7 @@ def index(request):
     for listing in listings:
         bids = Bid.objects.filter(listing=listing)
         highest_bid = bids.last() if bids.exists() else None
-        price_to_display = highest_bid.bid if highest_bid.bid else listing.price
+        price_to_display = highest_bid.bid if highest_bid else listing.price
         
         listings_with_prices.append({
             "listing": listing,
@@ -54,11 +54,23 @@ def create_listing(request):
 
 @login_required(login_url='/login')
 def view_listing(request, listing_id):
-    listing = Listing.objects.filter(pk=listing_id).first()
+    listing = Listing.objects.get(pk=listing_id)
+
+    if request.method == "POST":
+        close_auction = request.POST['close_auction']
+        if close_auction == 'true':
+            listing.is_active = False
+            listing.save()
+            return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
+        else: return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
+
+
     watchlist = Listing.objects.filter(watchlist=request.user).filter(pk=listing_id)
     comments = Comment.objects.filter(listing=listing_id).all()
     bids = Bid.objects.filter(listing=listing)
     last_bid = bids.last() if bids.exists() else None
+    winner = last_bid.user if listing.is_active == False and last_bid != None else None
+
     return render(request, "auctions/view_listing.html", {
         "listing": listing,
         "watchlist": watchlist,
@@ -68,6 +80,7 @@ def view_listing(request, listing_id):
         "bids": bids,
         "last_bid": last_bid,
         "user": request.user,
+        "winner": winner,
     })
 
 
@@ -84,10 +97,10 @@ def add_remove_watchlist(request, listing_id):
         action = request.POST['action']
         listing = Listing.objects.get(pk=listing_id)
         user = request.user
-        if action == 'Add to watchlist':
+        if action == 'add':
             listing.watchlist.add(user)
             return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
-        elif action == 'Remove from watchlist':
+        elif action == 'remove':
             listing.watchlist.remove(user)
             return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
         else:
