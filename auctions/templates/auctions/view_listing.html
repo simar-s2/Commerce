@@ -76,7 +76,7 @@
         {% endfor %}
 
     {% else %}
-        <h2><strong>Auction has ended</strong>. {% if winner %}{{ winner }} won the auction!{% endif %}</h2>
+        <h2><strong>Auction has ended</strong>. {% if winner and user == winner or user == listing.owner %}{{ winner }} won the auction!{% endif %}</h2>
         <br>
         <h2>Comments</h2>
         {% for comment in comments %}
