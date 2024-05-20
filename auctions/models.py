@@ -8,6 +8,12 @@ class User(AbstractUser):
     def __str__(self):
         return(f"{self.username}")
 
+class Category(models.Model):
+    category = models.CharField(max_length=50)
+
+    def __str__(self):
+        return(f"{self.category}")
+
 class Listing(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
@@ -15,7 +21,7 @@ class Listing(models.Model):
     price = models.FloatField(default=0)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="user")
     is_active = models.BooleanField(default=True)
-    category = models.CharField(max_length=100, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True, related_name="listing_category")
     date = models.DateTimeField(verbose_name="date created", auto_now_add=True)
     watchlist = models.ManyToManyField(User, blank=True, null=True, related_name="watchlist")
 

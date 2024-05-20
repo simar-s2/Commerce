@@ -10,6 +10,12 @@ class CreateListingForm(forms.ModelForm):
                 'class': 'form-control', 
                 'placeholder': f"{field_name.capitalize()}"
                 })
+    
+        self.fields['description'].widget = forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Description',
+                'rows': 5,
+            })
 
     class Meta:
         model = Listing

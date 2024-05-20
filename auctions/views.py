@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing, Comment, Bid
+from .models import User, Listing, Comment, Bid, Category
 from .forms import CreateListingForm, CommentForm, BidForm
 
 
@@ -144,6 +144,31 @@ def bid(request, listing_id):
                     bid.save()
     return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
 
+
+def categories(request):
+    return render(request, "auctions/categories.html", {
+        "categories": Category.objects.all()
+    })
+
+def categorical_listings(request, category):
+    category_id = Category.objects.get(category=category)
+    listings = Listing.objects.filter(category=category_id).all()
+    listings_with_prices = []
+
+    for listing in listings:
+        bids = Bid.objects.filter(listing=listing)
+        highest_bid = bids.last() if bids.exists() else None
+        price_to_display = highest_bid.bid if highest_bid else listing.price
+        
+        listings_with_prices.append({
+            "listing": listing,
+            "price": price_to_display
+        })
+
+    return render(request, "auctions/categorical_listings.html", {
+        "listings": listings_with_prices,
+        "category": category_id,
+    })
 
 def login_view(request):
     if request.method == "POST":
