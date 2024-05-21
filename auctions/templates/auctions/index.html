@@ -4,7 +4,6 @@
     <h2>Active Listings</h2>
 
     {% for listing in listings %}
-    {% if listing.listing.is_active == True %}
     <div>
         <a href="{% url 'view_listing' listing_id=listing.listing.id %}"><h4>{{ listing.listing.title }}</h4></a>
         {% if listing.listing.image %}
@@ -13,6 +12,5 @@
         <p>Description: {{ listing.listing.description }}</p>
         <p>Current Price: {{ listing.price }}</p>
     </div>
-    {% endif %}
     {% endfor %}
 {% endblock %}

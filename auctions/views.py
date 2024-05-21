@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
@@ -54,7 +54,7 @@ def create_listing(request):
 
 @login_required(login_url='/login')
 def view_listing(request, listing_id):
-    listing = Listing.objects.get(pk=listing_id)
+    listing = get_object_or_404(Listing, pk=listing_id)
 
     if request.method == "POST":
         close_auction = request.POST['close_auction']
@@ -136,8 +136,7 @@ def bid(request, listing_id):
                     bid = Bid(user=user, listing=listing, bid=form_data['bid'])
                     bid.save()
             else:
-                last_bid = bids[len(bids) - 1]
-                if form_data['bid'] <= last_bid.bid:
+                if form_data['bid'] <= bids.last().bid: 
                     return HttpResponseRedirect(reverse('view_listing', args=(listing_id, )))
                 else:
                     bid = Bid(user=user, listing=listing, bid=form_data['bid'])
@@ -151,9 +150,9 @@ def categories(request):
     })
 
 
-def categorical_listings(request, category):
-    category_id = Category.objects.get(category=category)
-    listings = Listing.objects.filter(category=category_id).all()
+def categorical_listings(request, category_name):
+    category = get_object_or_404(Category, category=category_name)
+    listings = Listing.objects.filter(category=category).all()
     listings_with_prices = []
 
     for listing in listings:
@@ -168,7 +167,7 @@ def categorical_listings(request, category):
 
     return render(request, "auctions/categorical_listings.html", {
         "listings": listings_with_prices,
-        "category": category_id,
+        "category": category,
     })
 
 

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Listing, Comment, Bid
+from .models import Listing, Comment, Bid, Category
 
 class CreateListingForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -16,6 +16,8 @@ class CreateListingForm(forms.ModelForm):
                 'placeholder': 'Description',
                 'rows': 5,
             })
+
+        self.fields['category'].empty_label = "Category"
 
     class Meta:
         model = Listing
