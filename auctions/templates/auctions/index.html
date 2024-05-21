@@ -2,15 +2,31 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-
-    {% for listing in listings %}
-    <div>
-        <a href="{% url 'view_listing' listing_id=listing.listing.id %}"><h4>{{ listing.listing.title }}</h4></a>
-        {% if listing.listing.image %}
-        <img src="{{ listing.listing.image }}" alt="{{ listing.listing.title }}" width="300px">
-        {% endif %}
-        <p>Description: {{ listing.listing.description }}</p>
-        <p>Current Price: {{ listing.price }}</p>
+    <div class="container">
+        <div class="row justify-content-center">
+            {% for listing in listings %}
+                <div class="col-3">
+                    <div class="card mb-4" style="width: 18rem; border-color: #fff;">
+                        {% if listing.listing.image %}
+                        <div style="height: 18rem; width: auto;">
+                            <img src="{{ listing.listing.image }}" class="card-img-top" alt="{{ listing.listing.title }}">
+                        </div>
+                        {% else %}
+                        <div style="height: 18rem; width: auto;">
+                            <img src="static/auctions/placeholder.png" class="card-img-top" alt="product image not available">
+                        </div>
+                        {% endif %}
+                        <hr>
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{% url 'view_listing' listing_id=listing.listing.id %}"><h4>{{ listing.listing.title }}</h4></a></h5>
+                            <p class="card-text">
+                                <p>Description: {{ listing.listing.description }}</p>
+                                <p>Current Price: {{ listing.price }}</p>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>  
     </div>
-    {% endfor %}
 {% endblock %}
