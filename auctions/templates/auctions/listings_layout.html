@@ -2,11 +2,14 @@
 
 {% block body %}
     <style>
+        :root {
+            grey: --#ccc
+        }
         .card {
-            border-color: #fff;
+            border-color: white;
         }
         .card:hover{
-            border-color: #ddd;
+            border-color: #ccc;
             text-decoration: none;
             color: black;
         }
@@ -14,25 +17,33 @@
             text-decoration: none;
             color: black;
         }
+        .card-img-top {
+            height: 15rem; /* Adjust the height as needed */
+            object-fit: cover;
+        }
+        .card-body {
+            border-top: 1px #ccc solid;
+        }
+
     </style>
 
     {% block heading %}{% endblock %}
 
-        <div class="row justify-content-center">
+        <div class="container row justify-content-center">
         {% for listing in listings %}
-            <div class="col-sm-12 col-md-6 col-lg-3">
-                <a href="{% url 'view_listing' listing_id=listing.listing.id %}" class="">
+            <div class="col-8 col-sm-8 col-md-6 col-lg-3 mt-4">
+                <a href="{% url 'view_listing' listing_id=listing.listing.id %}" class="col-sm-12 col-md-6 col-lg-3 mt-4">
                     <div class="card">
                         {% if listing.listing.image %}
-                            <img src="{{ listing.listing.image }}" class="card-img-top" alt="{{ listing.listing.title }}">
+                        <img src="{{ listing.listing.image }}" class="card-img-top" alt="{{ listing.listing.title }}">
                         {% else %}
-                            <img src="static/auctions/placeholder.png" class="card-img-top" alt="product image not available">
+                        <img src="static/auctions/placeholder.png" class="card-img-top" alt="product image not available">
                         {% endif %}
                         <div class="card-body">
-                            <h5 class="card-title"><h4>{{ listing.listing.title }}</h4></h5>
+                            <p class="card-title h4">{{ listing.listing.title }}</p>
                             <p class="card-text">
-                                <dd class="col-sm-9 text-truncate">{{listing.listing.description}}</dd>
-                                <dd class="col-sm-9 text-truncate">${{listing.price}}</dd>
+                                <dd class="col-12 text-truncate">{{listing.listing.description}}</dd>
+                                <dd class="col-sm-9">${{listing.price}}</dd>
                             </p>
                         </div>
                     </div>
