@@ -2,7 +2,7 @@
 
 {% block body %}
 
-    <h2>Create Listing</h2>
+    <h2 class="mb-3">Create Listing</h2>
 
     {% if message %}
         <div>{{ message }}</div>
@@ -10,11 +10,14 @@
     <form action="{% url 'create_listing' %}" method="post">
         {% csrf_token %}
         {% for field in form %}
-        <div class="form-group">
-            {{ field }}
+        <div class="row mb-3">
+            <div class="col-4">
+                {{ field }}
+            </div>
         </div>
+
         {% endfor %}
-        <input class="btn btn-primary" type="submit" value="Submit">
+        <input class="btn btn-dark" type="submit" value="Create Listing">
     </form>
 
 {% endblock %}

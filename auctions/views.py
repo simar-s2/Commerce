@@ -86,8 +86,21 @@ def view_listing(request, listing_id):
 
 @login_required(login_url='/login')
 def watchlist(request):
+    listings = Listing.objects.filter(watchlist=request.user)
+    listings_with_prices = []
+
+    for listing in listings:
+        bids = Bid.objects.filter(listing=listing)
+        highest_bid = bids.last() if bids.exists() else None
+        price_to_display = highest_bid.bid if highest_bid else listing.price
+        
+        listings_with_prices.append({
+            "listing": listing,
+            "price": price_to_display
+        })
+
     return render(request, "auctions/watchlist.html", {
-        "listings": Listing.objects.filter(watchlist=request.user)
+        "listings": listings_with_prices,
     })
 
 

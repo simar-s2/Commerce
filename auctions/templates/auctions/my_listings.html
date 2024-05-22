@@ -1,16 +1,5 @@
-{% extends "auctions/layout.html" %}
+{% extends "auctions/listings_layout.html" %}
 
-{% block body %}
+{% block heading %}
     <h2>My Listings</h2>
-
-    {% for listing in listings %}
-    <div>
-        <a href="{% url 'view_listing' listing_id=listing.listing.id %}"><h4>{{ listing.listing.title }}</h4></a>
-        {% if listing.listing.image %}
-        <img src="{{ listing.listing.image }}" alt="{{ listing.listing.title }}" width="300px">
-        {% endif %}
-        <p>Description: {{ listing.listing.description }}</p>
-        <p>Current Price: {{ listing.price }}</p>
-    </div>
-    {% endfor %}
 {% endblock %}
