@@ -9,6 +9,14 @@
         a:hover {
             color: white;
         }
+        .btn{
+            background-color: #eee;
+            border-radius: 0%;
+            border: 1px solid #ccc;
+        }
+        .btn:hover {
+            background-color: #ddd;
+        }
     </style>
     <h2>Categories</h2>
 
@@ -16,7 +24,7 @@
         {% for category in categories %}
         <a href="{% url 'listings' category_name=category.category %}">
             <li class="list-inline-item mx-3 my-3">
-                <button class="btn btn-dark">{{ category.category }}</button>
+                <button class="btn">{{ category.category }}</button>
             </li> 
         </a>
         {% endfor %}

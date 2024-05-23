@@ -5,9 +5,9 @@ class CreateListingForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CreateListingForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.label = ''
+            field.label = f"{field_name.capitalize()}"
             field.widget.attrs.update({
-                'class': 'form-control', 
+                'class': 'form-control',
                 'placeholder': f"{field_name.capitalize()}"
                 })
     
@@ -16,8 +16,6 @@ class CreateListingForm(forms.ModelForm):
                 'placeholder': 'Description',
                 'rows': 5,
             })
-
-        self.fields['category'].empty_label = "Category"
 
     class Meta:
         model = Listing

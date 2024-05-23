@@ -1,7 +1,30 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+    <style>
+        .form-control{
+            border: none;
+            border-bottom: 1px #ccc solid;
+            border-radius: 0;
+            outline: none;
+            box-shadow: none;
+        }
+        .form-control:focus {
+            -webkit-appearance: none;
+            outline: none;
+            box-shadow: none;
+            border-color: black;
+        }
+        .btn{
+            background-color: #eee;
+            border-radius: 0%;
+            border: 1px solid #ccc;
+        }
+        .btn:hover {
+            background-color: #ddd;
+        }
 
+    </style>
     <h2 class="mb-3">Create Listing</h2>
 
     {% if message %}
@@ -11,13 +34,20 @@
         {% csrf_token %}
         {% for field in form %}
         <div class="row mb-3">
-            <div class="col-sm-12 col-md-10 col-lg-6">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                {% if field.label == 'Price' %}
+                <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    {{ field }}
+                </div>
+                {% else %}
                 {{ field }}
-            </div>
+                {% endif %}
+            </div> 
         </div>
 
         {% endfor %}
-        <input class="btn btn-dark" type="submit" value="Create Listing">
+        <input class="btn" type="submit" value="Create Listing">
     </form>
 
 {% endblock %}
