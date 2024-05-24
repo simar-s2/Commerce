@@ -102,8 +102,8 @@ def view_listing(request, listing_id):
     watchlist = Listing.objects.filter(watchlist=request.user).filter(pk=listing_id)
     comments = Comment.objects.filter(listing=listing_id).all()
     bids = Bid.objects.filter(listing=listing)
-    last_bid = bids.last() if bids.exists() else None
-    winner = last_bid.user if listing.is_active == False and last_bid != None else None
+    highest_bid = bids.last() if bids.exists() else None
+    winner = highest_bid.user if listing.is_active == False and highest_bid != None else None
 
     return render(request, "auctions/view_listing.html", {
         "listing": listing,
@@ -112,7 +112,7 @@ def view_listing(request, listing_id):
         "Commentform": CommentForm,
         "Bidform": BidForm,
         "bids": bids,
-        "last_bid": last_bid,
+        "highest_bid": highest_bid,
         "user": request.user,
         "winner": winner,
     })

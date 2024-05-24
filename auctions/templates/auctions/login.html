@@ -6,12 +6,12 @@
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
         <div class="row mb-3">
-            <div class="col-sm-8 col-md-6 col-lg-4">
+            <div class="col-sm-8 col-md-6 col-lg-5">
                 <input autofocus class="form-control" type="text" id="Input" name="username" placeholder="Email address" required>
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-8 col-sm-8 col-md-6 col-lg-4">
+            <div class="col-8 col-sm-8 col-md-6 col-lg-5">
                 <input class="form-control" type="password" name="password" placeholder="Password" required>
             </div> 
         </div>

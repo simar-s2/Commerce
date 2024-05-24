@@ -23,7 +23,7 @@
                             {% endif %}
                         </div>
                         <div class="card-body">
-                            <p class="card-title h4">{{ listing.listing.title }}</p>
+                            <p class="card-title h5">{{ listing.listing.title }}</p>
                             <p class="card-text">
                                 <p class="col-12 text-truncate">{{ listing.listing.description }}</p>
                                 <div class="row">
@@ -55,6 +55,6 @@
         {% endfor %}
         </div>
     {% else %}
-    <p>No listings to display</p>
+    <p class="h5">No listings to display</p>
     {% endif %}
 {% endblock %}

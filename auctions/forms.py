@@ -24,12 +24,12 @@ class CreateListingForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.label = ''
-            field.widget.attrs.update({
-                'class': 'form-control', 
-                'placeholder': f"{field_name.capitalize()}"
-                })
+        self.fields['comment'].widget = forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Add Comment',
+                'rows': 5,
+            })
+        self.fields['comment'].label = ''
         
     class Meta:
         model = Comment
