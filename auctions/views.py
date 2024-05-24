@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.db.models import Q, QuerySet
+from django.db.models import Q, QuerySet, F, Max
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -23,7 +23,9 @@ def get_listings(query: QuerySet) -> list:
         
         listings_with_prices.append({
             "listing": listing,
-            "price": price_to_display
+            "price": price_to_display,
+            "number_of_bids": bids.__len__(),
+            "number_of_watchers": listing.watchlist.count()
         })
     
     # Returning list of listings with highest bid or starting price
@@ -222,6 +224,34 @@ def my_listings(request):
     
     return render(request, "auctions/my_listings.html", {
         "listings": listings,
+    })
+
+
+@login_required(login_url='/login')
+def my_bids(request):
+    user = request.user
+
+    # Find the highest bid for each listing
+    highest_bids = Bid.objects.values('listing').annotate(highest_bid=Max('bid'))
+
+    # Get listings where the user's bid is the highest
+    user_highest_bids = []
+    for bid in highest_bids:
+        listing_id = bid['listing']
+        highest_bid = bid['highest_bid']
+        
+        # Check if the user has made the highest bid for this listing
+        user_bid = Bid.objects.filter(listing_id=listing_id, user=user, bid=highest_bid).first()
+        bids = Bid.objects.filter(listing=listing_id, user=user).all()
+        if user_bid:
+            listing = Listing.objects.get(id=listing_id)
+            user_highest_bids.append({
+                'listing': listing,
+                'your_bid': user_bid.bid,
+            })
+    
+    return render(request, 'auctions/my_bids.html', {
+        'listings': user_highest_bids,
     })
 
 

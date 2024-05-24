@@ -32,6 +32,7 @@ class Bid(models.Model):
     bid = models.FloatField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="bidder")
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, null=True, related_name="listing_bid")
+    date = models.DateTimeField(verbose_name="date created", auto_now_add=True)
     
     def __str__(self):
         return(f"{self.user} made a bid of {self.bid} on {self.listing}")

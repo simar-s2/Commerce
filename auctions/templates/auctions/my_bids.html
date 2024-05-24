@@ -2,9 +2,9 @@
 {% load static %}
 {% block body %}
 
-    <div class="mb-4">{% block heading %}{% endblock %}</div>
-    
-    {% if listings %}
+<p class="mb-4 h2">Listings Where You Have the Highest Bid</p>
+
+        {% if listings %}
         <div class="row justify-content-center">
         {% for listing in listings %}
             <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mt-3">
@@ -27,25 +27,11 @@
                             <p class="card-text">
                                 <p class="col-12 text-truncate">{{ listing.listing.description }}</p>
                                 <div class="row">
-                                    <ul class="col-6 text-muted list-unstyled">
-                                        <li>
-                                            <small>
-                                            {% if listing.number_of_watchers %} 
-                                            watchers
-                                            {{ listing.number_of_watchers }}
-                                            {% endif %}
-                                            </small>
-                                        </li>
-                                        <li>
-                                            <small>
-                                            {% if listing.number_of_bids %} 
-                                            bids
-                                            {{ listing.number_of_bids }}
-                                            {% endif %}
-                                            </small>
-                                        </li>
-                                    </ul>
-                                    <p class="col-6 h6">${{ listing.price }}</p>
+                                    <p class="card-text">
+                                        
+                                            Your Bid: ${{ listing.your_bid }}
+                                        
+                                    </p>
                                 </div>
                             </p>
                         </div>
@@ -55,6 +41,7 @@
         {% endfor %}
         </div>
     {% else %}
-    <p>No listings to display</p>
+    <p>You do not have the highest bid on any listings.</p>
     {% endif %}
+        
 {% endblock %}

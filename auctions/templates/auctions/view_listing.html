@@ -29,13 +29,13 @@
             <form action="{% url 'add_remove_watchlist' listing_id=listing.id %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="add">
-                <input class="btn btn-success" type="submit" value="Add to watchlist">
+                <input class="btn" type="submit" value="Add to watchlist">
             </form>
             {% else %}
             <form action="{% url 'add_remove_watchlist' listing_id=listing.id %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="remove">
-                <input class="btn btn-danger" type="submit" value="Remove from watchlist">
+                <input class="btn" type="submit" value="Remove from watchlist">
             </form>
             <br>
             {% endif %}
@@ -47,7 +47,7 @@
             <div class="form-group">
                 {% csrf_token %}
                 <input type="hidden" name="close_auction" value="true">
-                <input class="btn btn-primary" type="submit" value="Close Auction">
+                <input class="btn" type="submit" value="Close Auction">
             </div>
         </form>
         {% else %}
@@ -57,7 +57,7 @@
                 {% csrf_token %}
                 {{ Bidform }}
                 <br>
-                <input class="btn btn-primary" type="submit" value="Bid">
+                <input class="btn" type="submit" value="Bid">
             </div>
         </form>
         {% endif %}
@@ -67,7 +67,7 @@
                 {% csrf_token %}
                 {{ Commentform }}
                 <br>
-                <input class="btn btn-primary" type="submit" value="Add Comment">
+                <input class="btn" type="submit" value="Add Comment">
             </div>
         </form>
         {% for comment in comments %}
@@ -76,7 +76,11 @@
         {% endfor %}
 
     {% else %}
-        <h2><strong>Auction has ended</strong>. {% if winner and user == winner or user == listing.owner %}{{ winner }} won the auction!{% endif %}</h2>
+        <h2><strong>Auction has ended</strong>. 
+            {% if winner and user == winner or user == listing.owner and winner != None %}
+            {{ winner }} won the auction!
+            {% endif %}
+        </h2>
         <br>
         <h2>Comments</h2>
         {% for comment in comments %}

@@ -1,3 +1,110 @@
-input {
-    padding: 10rem;
+#navbar {
+    padding: 1rem;
+    padding-top: 1.5rem;
+    border-bottom: 1px solid #ccc;
+}
+
+.nav-item {
+    font-size: 1.1rem;
+    padding: 0.25rem;
+}
+
+.navbar-brand h3 {
+    letter-spacing: 5px;
+    font-weight: bolder;
+}
+
+#body {
+    padding-top: 8rem;
+    font-family: Robot, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #222;
+}
+
+.dropdown {
+    padding-right: 3rem;
+}
+
+.card {
+    border-color: white;
+    padding: 1.5rem;
+}
+
+.card:hover{
+    border-color: #ccc;
+    text-decoration: none;
+    color: #222;
+}
+
+a {
+    text-decoration: none;
+    color: #222;
+}
+
+p > a {
+    color: #222;
+    font-weight: bold;
+}
+
+p > a:hover {
+    text-decoration: underline;
+    color: #222;
+    font-weight: bold;
+}
+
+td > a:hover {
+    text-decoration: underline;
+    color: #222;
+}
+
+.card-body {
+    border-top: 1px #ccc solid;
+}
+
+.form-control{
+    border: none;
+    border-bottom: 1px #ccc solid;
+    border-radius: 0;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #222;
+}
+
+.btn{
+    background-color: #eee;
+    border-radius: 0%;
+    border: 1px solid #ccc;
+}
+
+.btn:hover {
+    background-color: #ddd;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.card-img-top {
+    object-fit: contain;
+    width: 100%;
+    height: 15rem;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1; 
 }
