@@ -24,7 +24,7 @@
 *Figure 3: Listing’s comments*
 
 ![Comments under Listing (placeholder)](/auctions/static/auctions/images/auctions4.png)
-*Figure 3: Create listing page*
+*Figure 4: Create listing page*
 
 ## Project Structure
 
