@@ -16,7 +16,7 @@
 
 *Screenshots coming soon – placeholders shown below.*
 
-![Homepage Screenshot (placeholder)](/images/homepage_placeholder.png)  
+![Homepage Screenshot (placeholder)](static/images/auctions.png)  
 *Figure 1: Placeholder for the Commerce app homepage*
 
 ![Listing Detail (placeholder)](/images/listing_placeholder.png)  
