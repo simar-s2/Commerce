@@ -15,13 +15,16 @@
 ## Screenshots
 
 ![Homepage Screenshot (placeholder)](/auctions/static/auctions/images/auctions.png)
-*Figure 1: Placeholder for the Commerce app homepage*
+*Figure 1: Commerce app homepage*
 
 ![Listing Detail (placeholder)](/auctions/static/auctions/images/auctions2.png)
-*Figure 2: Placeholder for a listing’s detail page*
+*Figure 2: Listing’s detail page*
 
 ![Comments under Listing (placeholder)](/auctions/static/auctions/images/auctions3.png)
-*Figure 3: Placeholder for a listing’s comments*
+*Figure 3: Listing’s comments*
+
+![Comments under Listing (placeholder)](/auctions/static/auctions/images/auctions4.png)
+*Figure 3: Create listing page*
 
 ## Project Structure
 
