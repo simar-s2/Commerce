@@ -14,13 +14,14 @@
 
 ## Screenshots
 
-*Screenshots coming soon – placeholders shown below.*
-
-![Homepage Screenshot (placeholder)](static/images/auctions.png)  
+![Homepage Screenshot (placeholder)](/auctions/static/auctions/images/auctions.png)
 *Figure 1: Placeholder for the Commerce app homepage*
 
-![Listing Detail (placeholder)](/images/listing_placeholder.png)  
+![Listing Detail (placeholder)](/auctions/static/auctions/images/auctions2.png)
 *Figure 2: Placeholder for a listing’s detail page*
+
+![Comments under Listing (placeholder)](/auctions/static/auctions/images/auctions3.png)
+*Figure 3: Placeholder for a listing’s comments*
 
 ## Project Structure
 
